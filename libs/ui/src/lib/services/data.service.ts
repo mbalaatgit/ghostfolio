@@ -772,6 +772,20 @@ export class DataService {
     });
   }
 
+  public loginLocal({ password, username }: { password: string; username: string }) {
+    return this.http.post<OAuthResponse>('/api/v1/auth/local/login', {
+      password,
+      username
+    });
+  }
+
+  public registerLocal({ password, username }: { password: string; username: string }) {
+    return this.http.post<OAuthResponse>('/api/v1/auth/local/register', {
+      password,
+      username
+    });
+  }
+
   public postAccess(aAccess: CreateAccessDto) {
     return this.http.post<Access>('/api/v1/access', aAccess);
   }
