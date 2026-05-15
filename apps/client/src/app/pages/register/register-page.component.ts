@@ -14,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
@@ -22,7 +23,7 @@ import { GfUserAccountRegistrationDialogComponent } from './user-account-registr
 
 @Component({
   host: { class: 'page' },
-  imports: [GfLogoComponent, MatButtonModule, RouterModule],
+  imports: [FormsModule, GfLogoComponent, MatButtonModule, RouterModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   selector: 'gf-register-page',
   styleUrls: ['./register-page.scss'],
@@ -34,6 +35,8 @@ export class GfRegisterPageComponent implements OnInit {
   public hasPermissionForAuthToken: boolean;
   public hasPermissionForSubscription: boolean;
   public hasPermissionToCreateUser: boolean;
+  public localPassword = "";
+  public localUsername = "";
   public historicalDataItems: LineChartItem[];
   public info: InfoItem;
 
@@ -75,6 +78,31 @@ export class GfRegisterPageComponent implements OnInit {
       globalPermissions,
       permissions.createUserAccount
     );
+  }
+
+
+  public loginLocal() {
+    this.dataService
+      .loginLocal({ password: this.localPassword, username: this.localUsername })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ authToken }) => {
+        if (authToken) {
+          this.tokenStorageService.saveToken(authToken, true);
+          this.router.navigate(['/']);
+        }
+      });
+  }
+
+  public registerLocal() {
+    this.dataService
+      .registerLocal({ password: this.localPassword, username: this.localUsername })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ authToken }) => {
+        if (authToken) {
+          this.tokenStorageService.saveToken(authToken, true);
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   public openShowAccessTokenDialog() {

@@ -71,6 +71,37 @@ export class AuthController {
     }
   }
 
+
+  @Post('local/register')
+  public async localRegister(
+    @Body() body: { password: string; username: string }
+  ): Promise<OAuthResponse> {
+    try {
+      const authToken = await this.authService.registerLocalUser(body);
+      return { authToken };
+    } catch {
+      throw new HttpException(
+        getReasonPhrase(StatusCodes.FORBIDDEN),
+        StatusCodes.FORBIDDEN
+      );
+    }
+  }
+
+  @Post('local/login')
+  public async localLogin(
+    @Body() body: { password: string; username: string }
+  ): Promise<OAuthResponse> {
+    try {
+      const authToken = await this.authService.validateLocalLogin(body);
+      return { authToken };
+    } catch {
+      throw new HttpException(
+        getReasonPhrase(StatusCodes.FORBIDDEN),
+        StatusCodes.FORBIDDEN
+      );
+    }
+  }
+
   @Get('google')
   @UseGuards(AuthGuard('google'))
   public googleLogin() {

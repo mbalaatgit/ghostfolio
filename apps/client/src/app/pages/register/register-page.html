@@ -31,6 +31,28 @@
           @if (hasPermissionForAuthToken && hasPermissionForAuthGoogle) {
             <div class="my-3 text-muted" i18n>or</div>
           }
+
+          <div class="my-3">
+            <input
+              [(ngModel)]="localUsername"
+              class="form-control mb-2"
+              placeholder="Username"
+              type="text"
+            />
+            <input
+              [(ngModel)]="localPassword"
+              class="form-control mb-2"
+              placeholder="Password"
+              type="password"
+            />
+            <button class="mr-2" mat-flat-button color="primary" (click)="loginLocal()">
+              <span i18n>Login (Local)</span>
+            </button>
+            <button mat-stroked-button (click)="registerLocal()">
+              <span i18n>Register (Local)</span>
+            </button>
+          </div>
+
           @if (hasPermissionForAuthGoogle) {
             <a
               class="px-4 py-3 rounded-pill w-100"

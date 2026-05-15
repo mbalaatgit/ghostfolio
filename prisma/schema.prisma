@@ -270,6 +270,7 @@ model User {
   authDevices   AuthDevice[]
   createdAt     DateTime        @default(now())
   id            String          @id @default(uuid())
+  passwordHash  String?
   provider      Provider        @default(ANONYMOUS)
   role          Role            @default(USER)
   settings      Settings?
@@ -277,6 +278,7 @@ model User {
   tags          Tag[]
   thirdPartyId  String?
   updatedAt     DateTime        @updatedAt
+  username      String?
   watchlist     SymbolProfile[] @relation("UserWatchlist")
   SymbolProfile SymbolProfile[]
 
@@ -285,6 +287,7 @@ model User {
   @@index([provider])
   @@index([role])
   @@index([thirdPartyId])
+  @@unique([username])
 }
 
 enum AccessPermission {
@@ -336,6 +339,7 @@ enum Provider {
   ANONYMOUS
   GOOGLE
   INTERNET_IDENTITY
+  LOCAL
   OIDC
 }
 

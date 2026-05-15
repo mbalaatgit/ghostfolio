@@ -211,12 +211,14 @@ export class UserService {
       authChallenge,
       createdAt,
       id,
+      passwordHash,
       provider,
       role,
       settings,
       subscriptions,
       thirdPartyId,
-      updatedAt
+      updatedAt,
+      username
     } = await this.prismaService.user.findUnique({
       include: {
         _count: {
@@ -244,11 +246,13 @@ export class UserService {
       authChallenge,
       createdAt,
       id,
+      passwordHash,
       provider,
       role,
       settings: settings as UserWithSettings['settings'],
       thirdPartyId,
       updatedAt,
+      username,
       activityCount: analytics?.activityCount,
       dataProviderGhostfolioDailyRequests:
         analytics?.dataProviderGhostfolioDailyRequests
